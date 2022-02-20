@@ -58,7 +58,7 @@ foreach ($entry in $show.results[$show.results.length..0]){
 	
 $arrayInput = @()
 do {
-    $input = (Read-Host "Which episode would you like to download? Type in the number for each episode you want. Type 'end' whebn finished")
+    $input = (Read-Host "Which episode would you like to download? Type in the number for each episode you want. Type 'end' when finished")
     if ($input -ne '') {$arrayInput += $input}
 }
 #Loop will stop when user enter 'END' as input
@@ -66,9 +66,7 @@ until ($input -eq 'end')
 
 $choices = $arrayInput | Where-Object { $_ –ne "end" }
 foreach ($choice in $choices){
-    $choice = $choice-1
-    $choice
-    read-host "wait"
+    $choice = $entryData[$choice-1]
     $var = Invoke-GiantBombAPI -SearchType "video/$($choice.guid)"
     $fileName = "./$($var.results.name -replace '\s','' -replace '/','-' -replace ':','').mp4" 
     if ($entry.hd_url){
