@@ -64,6 +64,7 @@ do {
 #Loop will stop when user enter 'END' as input
 until ($input -eq 'end')
 
+### loop through all the user choices ###
 $choices = $arrayInput | Where-Object { $_ –ne "end" }
 foreach ($choice in $choices){
     $choice = $entryData[$choice-1]
