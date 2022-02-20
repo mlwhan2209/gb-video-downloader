@@ -11,7 +11,7 @@ Keep in mind, according to their API they don't want anyone to download more tha
 
 ## Usage
 
-Run `gb-scraper.ps1`
+Run `gb-video-downloader.ps1`
 When asked, type the number of the show you want from the list
 When asked, type the number of the episode you want to download from the list
 
