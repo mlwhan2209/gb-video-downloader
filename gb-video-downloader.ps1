@@ -1,4 +1,4 @@
-
+﻿
 Import-Module ./gb-video-downloader.psm1 -Force
 
 [xml]$configFile = get-content .\config.xml
