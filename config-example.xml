@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<configuration>
+    <!--Vars -->
+    <add key="var1" value="<API-Key-Here>"/>
+</configuration>
+
+
