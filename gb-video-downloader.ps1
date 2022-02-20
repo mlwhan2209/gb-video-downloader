@@ -59,6 +59,14 @@ foreach ($entry in $show.results[$show.results.length..0]){
     }
 }
 
+$arrayInput = @()
+do {
+    $input = (Read-Host "Which episode would you like to download? Type in the number for each episode you want. Type 'end' when finished")
+    if ($input -ne '') {$arrayInput += $input}
+}
+#Loop will stop when user enter 'END' as input
+until ($input -eq 'end')
+
 ### loop through all the user choices ###
 $choices = $arrayInput | Where-Object { $_ –ne "end" }
 foreach ($choice in $choices){
