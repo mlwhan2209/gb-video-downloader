@@ -1,5 +1,6 @@
 # Overview
 This is a simple way to download your favorite videos from the classic website videogamemountain
+
 Keep in mind, according to their API they don't want anyone to download more than 20 videos a day. 
 
 # Setup
@@ -12,7 +13,9 @@ Keep in mind, according to their API they don't want anyone to download more tha
 ## Usage
 
 Run `gb-video-downloader.ps1`
+
 When asked, type the number of the show you want from the list
+
 When asked, type the number of the episode you want to download from the list
 
 
