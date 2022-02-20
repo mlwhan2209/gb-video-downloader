@@ -1,4 +1,4 @@
-
+﻿
 Import-Module ./gb-video-downloader.psm1 -Force
 
 [xml]$configFile = get-content .\config.xml
@@ -59,11 +59,13 @@ foreach ($entry in $show.results[$show.results.length..0]){
     }
 }
 
-$selected_number = Read-Host "Which episode would you like to download? Type in the number"
-$choice = $entryData[$selected_number-1]
-$var = Invoke-GiantBombAPI -SearchType "video/$($choice.guid)"
-foreach ($entry in $var.results){
-    $fileName = "./$($entry.name -replace '\s','' -replace '/','-' -replace ':','').mp4" 
+### loop through all the user choices ###
+$choices = $arrayInput | Where-Object { $_ –ne "end" }
+foreach ($choice in $choices){
+    $choice = $entryData[$choice-1]
+    $var = Invoke-GiantBombAPI -SearchType "video/$($choice.guid)"
+    $fileName = "./$($var.results.name -replace '\s','' -replace '/','-' -replace ':','').mp4" 
+
     if ($entry.hd_url){
         Write-Output "Downloading HD version of $($entry.name)"
         Invoke-WebRequest -URI "$($entry.hd_url)$key" -Outfile $fileName
