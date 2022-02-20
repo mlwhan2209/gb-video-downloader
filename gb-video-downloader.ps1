@@ -61,7 +61,7 @@ $choice = $entryData[$selected_number-1]
 $var = Invoke-GiantBombAPI -SearchType "video/$($choice.guid)"
 foreach ($entry in $var.results){
     $trimmedName = $entry.name -replace "/s"
-    $trimmedName = $entry.name -replace " ", ""
+    $trimmedName = $entry.name -replace "/", "-"
     if ($entry.hd_url){
         Write-Output "Downloading HD version of $($entry.name)"
         Invoke-WebRequest -URI "$($entry.hd_url)$key" -Outfile "./$trimmedName.mp4"
