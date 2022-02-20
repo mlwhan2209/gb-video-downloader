@@ -15,9 +15,12 @@ foreach ($entry in $var.results){
     $i++
     $guid_array += New-Object PsObject -property @{
         'guid' = $entry.guid
+        'title' = $entry.title
+        'deck' = $entry.deck
         }
     Write-Output "$i. $($entry.title)`n$($entry.deck)`n"
 }
+
 
 $selected_number = Read-Host "Which show would you like to download? Type in the number"
 $choice = $guid_array[$selected_number-1]
@@ -55,14 +58,6 @@ foreach ($entry in $show.results[$show.results.length..0]){
         Write-Output "`n$i. $($entry.name) `n$($entry.deck)`n" 
     }
 }
-	
-$arrayInput = @()
-do {
-    $input = (Read-Host "Which episode would you like to download? Type in the number for each episode you want. Type 'end' when finished")
-    if ($input -ne '') {$arrayInput += $input}
-}
-#Loop will stop when user enter 'END' as input
-until ($input -eq 'end')
 
 ### loop through all the user choices ###
 $choices = $arrayInput | Where-Object { $_ –ne "end" }
@@ -70,16 +65,17 @@ foreach ($choice in $choices){
     $choice = $entryData[$choice-1]
     $var = Invoke-GiantBombAPI -SearchType "video/$($choice.guid)"
     $fileName = "./$($var.results.name -replace '\s','' -replace '/','-' -replace ':','').mp4" 
+
     if ($entry.hd_url){
-        Write-Output "Downloading HD version of $($var.results.name)"
+        Write-Output "Downloading HD version of $($entry.name)"
         Invoke-WebRequest -URI "$($entry.hd_url)$key" -Outfile $fileName
     }
     elseif ($entry.high_url) {
-        Write-Output "Downloading High version of $($var.results.name)"
+        Write-Output "Downloading High version of $($entry.name)"
         Invoke-WebRequest -URI "$($entry.high_url)$key" -Outfile $fileName
     }
     elseif ($entry.low_url) {
-        Write-Output "Downloading Low version of $($var.results.name)"
+        Write-Output "Downloading Low version of $($entry.name)"
         Invoke-WebRequest -URI "$($entry.low_url)$key" -Outfile $fileName
     }
     else {
