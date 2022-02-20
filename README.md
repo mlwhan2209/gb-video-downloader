@@ -6,7 +6,7 @@ Keep in mind, according to their API they don't want anyone to download more tha
 
  - go to https://www.giantbomb.com/api/ and grab your API key 
  - clone the repo and navigate to  it in your terminal
- - rename  `config.xml.example` to `config.xml` and paste your API key where it says `<API-Key-Here>`
+ - rename  `config-example.xml` to `config.xml` and paste your API key where it says `<API-Key-Here>`
  - You are going to want to have infinite scroll setup on your terminal. There are over 3000 Quick Looks for example and the name and deck are being displayed for each. 
 
 ## Usage
