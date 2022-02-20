@@ -60,19 +60,17 @@ $selected_number = Read-Host "Which episode would you like to download? Type in 
 $choice = $entryData[$selected_number-1]
 $var = Invoke-GiantBombAPI -SearchType "video/$($choice.guid)"
 foreach ($entry in $var.results){
-    $trimmedName = $entry.name -replace "/s"
-    $trimmedName = $entry.name -replace "/", "-"
     if ($entry.hd_url){
         Write-Output "Downloading HD version of $($entry.name)"
-        Invoke-WebRequest -URI "$($entry.hd_url)$key" -Outfile "./$trimmedName.mp4"
+        Invoke-WebRequest -URI "$($entry.hd_url)$key" -Outfile "./$($entry.name -replace '\s','' -replace '/','-').mp4" 
     }
     elseif ($entry.high_url) {
         Write-Output "Downloading High version of $($entry.name)"
-        Invoke-WebRequest -URI "$($entry.high_url)$key" -Outfile "./$trimmedName.mp4"
+        Invoke-WebRequest -URI "$($entry.high_url)$key" -Outfile "./$($entry.name -replace '\s' -replace '/','-').mp4" 
     }
     elseif ($entry.low_url) {
         Write-Output "Downloading Low version of $($entry.name)"
-        Invoke-WebRequest -URI "$($entry.low_url)$key" -Outfile "./$trimmedName.mp4"
+        Invoke-WebRequest -URI "$($entry.low_url)$key" -Outfile "./$($entry.name -replace '\s' -replace '/','-').mp4" 
     }
     else {
         Write-Output "All URL's empty :(. Is something broke?"
