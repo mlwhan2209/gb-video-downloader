@@ -67,23 +67,21 @@ do {
 #Loop will stop when user enter 'END' as input
 until ($input -eq 'end')
 
-### loop through all the user choices ###
 $choices = $arrayInput | Where-Object { $_ –ne "end" }
 foreach ($choice in $choices){
     $choice = $entryData[$choice-1]
     $var = Invoke-GiantBombAPI -SearchType "video/$($choice.guid)"
     $fileName = "./$($var.results.name -replace '\s','' -replace '/','-' -replace ':','').mp4" 
-
     if ($entry.hd_url){
-        Write-Output "Downloading HD version of $($entry.name)"
+        Write-Output "Downloading HD version of $($var.results.name)"
         Invoke-WebRequest -URI "$($entry.hd_url)$key" -Outfile $fileName
     }
     elseif ($entry.high_url) {
-        Write-Output "Downloading High version of $($entry.name)"
+        Write-Output "Downloading High version of $($var.results.name)"
         Invoke-WebRequest -URI "$($entry.high_url)$key" -Outfile $fileName
     }
     elseif ($entry.low_url) {
-        Write-Output "Downloading Low version of $($entry.name)"
+        Write-Output "Downloading Low version of $($var.results.name)"
         Invoke-WebRequest -URI "$($entry.low_url)$key" -Outfile $fileName
     }
     else {
