@@ -49,6 +49,7 @@ foreach ($entry in $show.results[$show.results.length..0]){
     $i++
     $entryData += New-Object PsObject -property @{
         'guid' = "$($entry.guid)"
+        'name' = "$($entry.name)"
     }
     ## this is helpful for looking at bombcast list ##
     if ($($entry.premium) -eq "True"){
@@ -68,21 +69,20 @@ do {
 until ($input -eq 'end')
 
 $choices = $arrayInput | Where-Object { $_ –ne "end" }
-foreach ($choice in $choices){
-    $choice = $entryData[$choice-1]
+foreach ($selectedNumber in $choices){
+    $choice = $entryData[$selectedNumber-1]
     $var = Invoke-GiantBombAPI -SearchType "video/$($choice.guid)"
     $fileName = "./$($var.results.name -replace '\s','' -replace '/','-' -replace ':','').mp4" 
-    if ($entry.hd_url){
+    if ($var.results.hd_url){
         Write-Output "Downloading HD version of $($var.results.name)"
-        Invoke-WebRequest -URI "$($entry.hd_url)$key" -Outfile $fileName
+        Invoke-WebRequest -URI "$($var.results.hd_url)$key" -Outfile $fileName
     }
-    elseif ($entry.high_url) {
+    elseif ($var.results.high_url) {
         Write-Output "Downloading High version of $($var.results.name)"
-        Invoke-WebRequest -URI "$($entry.high_url)$key" -Outfile $fileName
+        Invoke-WebRequest -URI "$($var.results.high_url)$key" -Outfile $fileName
     }
-    elseif ($entry.low_url) {
+    elseif ($var.results.low_url) {
         Write-Output "Downloading Low version of $($var.results.name)"
-        Invoke-WebRequest -URI "$($entry.low_url)$key" -Outfile $fileName
     }
     else {
         Write-Output "All URL's empty :(. Is something broke?"
