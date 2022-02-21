@@ -4,7 +4,7 @@ This is a simple way to download your favorite videos from the classic website v
 Keep in mind, according to their API they don't want anyone to download more than 20 videos a day. 
 
 ## Setup
- - install Powershell 7. 
+ - Need to install Powershell 7. 
     - on Windows, you can do that here: https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.2
     - on Mac, setup homebrew and then you can just run ````brew install --cask powershell````
  - go to https://www.giantbomb.com/api/ and grab your API key 
@@ -14,11 +14,13 @@ Keep in mind, according to their API they don't want anyone to download more tha
 
 ## Usage
 
-Run `gb-video-downloader.ps1`
+- Run `gb-video-downloader.ps1`
+- When asked, type the number of the show you want to start downloading from 
+- When asked, type the number of the episode you want to stop downloading from
 
-When asked, type the number of the show you want from the list
-
-When asked, type the number of the episode you want to download from the list
+- NOTE: if you want a single video, just put the same number in both entries
+- Set the filepath you want to download to. Make sure your path ends on a slash
+ex: C:/Users/CharlieTunoku/Desktop/Persona4EnduranceRun/
 
 
 
