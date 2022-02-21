@@ -6,7 +6,7 @@ Keep in mind, according to their API they don't want anyone to download more tha
 ## Setup
  - install Powershell 7. 
     - on Windows, you can do that here: https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.2
-    - on Mac, setup homebrew and then you can just run ````brew install --cask powershell''''
+    - on Mac, setup homebrew and then you can just run ````brew install --cask powershell````
  - go to https://www.giantbomb.com/api/ and grab your API key 
  - clone the repo and navigate to  it in your terminal
  - rename  `config-example.xml` to `config.xml` and paste your API key where it says `<API-Key-Here>`
