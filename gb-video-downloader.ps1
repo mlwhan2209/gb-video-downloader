@@ -68,8 +68,6 @@ $path = read-host ("What path do you want to download this to? ex: D:/Media/TV/B
 foreach ($selectedNumber in $choices){
     $choice = $entryData[$selectedNumber-1]
     $var = Invoke-GiantBombAPI -SearchType "video/$($choice.guid)"
-    $var.results
-    read-host ("wait")
     $fileName = "$path/$($var.results.name -replace '\s','' -replace '/','-' -replace ':','').mp4" 
     if ($var.results.hd_url){
         Write-Output "Downloading HD version of $($var.results.name)"
