@@ -64,13 +64,13 @@ Write-Output ("You are selecting the range of videos you want. If you just want 
 $lowerBound = read-host ("What # do you want to start at?")
 $upperBound = read-host ("What # do you want to end at?")
 $choices = $lowerBound..$upperBound
-
+$path = read-host ("What path do you want to download this to? ex: D:/Media/TV/Breaking Bad/Season 01/")
 foreach ($selectedNumber in $choices){
-	$selectedNumber
-	read-host ("wait")
     $choice = $entryData[$selectedNumber-1]
     $var = Invoke-GiantBombAPI -SearchType "video/$($choice.guid)"
-    $fileName = "./$($var.results.name -replace '\s','' -replace '/','-' -replace ':','').mp4" 
+    $var.results
+    read-host ("wait")
+    $fileName = "$path/$($var.results.name -replace '\s','' -replace '/','-' -replace ':','').mp4" 
     if ($var.results.hd_url){
         Write-Output "Downloading HD version of $($var.results.name)"
         Invoke-WebRequest -URI "$($var.results.hd_url)$key" -Outfile $fileName
