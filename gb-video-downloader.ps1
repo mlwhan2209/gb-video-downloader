@@ -60,13 +60,10 @@ foreach ($entry in $show.results[$show.results.length..0]){
     }
 }
 
-$arrayInput = @()
-do {
-    $input = (Read-Host "Which episode would you like to download? Type in the number for each episode you want. Type 'end' when finished")
-    if ($input -ne '') {$arrayInput += $input}
-}
-#Loop will stop when user enter 'END' as input
-until ($input -eq 'end')
+Write-Output ("You are selecting the range of videos you want. If you just want a single video, keep both numbers the same")
+$lowerBound = read-host ("What # do you want to start at?")
+$upperBound = read-host ("What # do you want to end at?")
+$choices = $lowerBound..$upperBound
 
 $choices = $arrayInput | Where-Object { $_ –ne "end" }
 foreach ($selectedNumber in $choices){
