@@ -65,8 +65,9 @@ $lowerBound = read-host ("What # do you want to start at?")
 $upperBound = read-host ("What # do you want to end at?")
 $choices = $lowerBound..$upperBound
 
-$choices = $arrayInput | Where-Object { $_ –ne "end" }
 foreach ($selectedNumber in $choices){
+	$selectedNumber
+	read-host ("wait")
     $choice = $entryData[$selectedNumber-1]
     $var = Invoke-GiantBombAPI -SearchType "video/$($choice.guid)"
     $fileName = "./$($var.results.name -replace '\s','' -replace '/','-' -replace ':','').mp4" 
