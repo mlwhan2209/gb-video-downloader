@@ -48,7 +48,7 @@ function Invoke-GiantBombAPI {
 
      ### we always want to return as JSON ###
      ### even if the user has no added filters ###
-    if ([string]::IsNullOrEmpty($searchFilter)){
+    if (!$searchFilter){
         $filters = "&format=json" 
     }
     ### if the user does have a filter, ###
