@@ -60,3 +60,63 @@ function Invoke-GiantBombAPI {
     $TempUri = $Uri -replace "\{search\}", $search -replace "\{apikey\}", $key -replace "\{filters\}", $filters 
     Invoke-RestMethod -Uri $TempUri -Method Get
 }
+
+function Invoke-GiantBombVideoSearch {
+    [cmdletbinding()]
+    param(
+        [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
+        [Alias('SearchQuery')][string]$search
+    )
+    
+    $var = Invoke-GiantBombAPI -SearchType "search" -Filters "&query=$search"
+    ## grab total number of pages to make sure we loop through all results ##
+    [int]$pageNumbers = $var.number_of_total_results / 100
+    $i = 0
+    while ($i -le $pageNumbers) {
+        $i++
+        $newpage = Invoke-GiantBombAPI -Filters "&query=$search&offset=$($i)00" -SearchType "search"
+        $var.results += $newpage.results
+    }
+
+    ## loop through each entry found ##
+    $entryData = @()
+    $i = 0
+    foreach ($entry in $var.results[$var.results.length..0]){
+        $i++
+        $entryData += New-Object PsObject -property @{
+            'guid' = "$($entry.guid)"
+            'name' = "$($entry.name)"
+        }
+        if ($($entry.premium) -eq "True"){
+            Write-Output "`n$i. $($entry.name) (premium) `n$($entry.deck)`n"
+        }
+        else {
+            Write-Output "`n$i. $($entry.name) `n$($entry.deck)`n" 
+        }
+    }
+    Write-Output ("You are selecting the range of videos you want. If you just want a single video, keep both numbers the same")
+    $lowerBound = read-host ("What # do you want to start at?")
+    $upperBound = read-host ("What # do you want to end at?")
+    $choices = $lowerBound..$upperBound
+    $path = read-host ("What path do you want to download this to? ex: D:/Media/TV/Breaking Bad/Season 01/")
+    foreach ($selectedNumber in $choices){
+        $choice = $entryData[$selectedNumber-1]
+        $var = Invoke-GiantBombAPI -SearchType "video/$($choice.guid)"
+        $fileName = "$path/$($var.results.name -replace '\s','' -replace '/','-' -replace ':','').mp4" 
+        if ($var.results.hd_url){
+            Write-Output "Downloading HD version of $($var.results.name)"
+            Invoke-WebRequest -URI "$($var.results.hd_url)$key" -Outfile $fileName
+        }
+        elseif ($var.results.high_url) {
+            Write-Output "Downloading High version of $($var.results.name)"
+            Invoke-WebRequest -URI "$($var.results.high_url)$key" -Outfile $fileName
+        }
+        elseif ($var.results.low_url) {
+            Write-Output "Downloading Low version of $($var.results.name)"
+        }
+        else {
+            Write-Output "All URL's empty :(. Is something broke?"
+        }
+    }
+
+}
