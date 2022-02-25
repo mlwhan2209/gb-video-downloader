@@ -94,10 +94,15 @@ function Invoke-GiantBombVideoSearch {
             Write-Output "`n$i. $($entry.name) `n$($entry.deck)`n" 
         }
     }
-    Write-Output ("You are selecting the range of videos you want. If you just want a single video, keep both numbers the same")
-    $lowerBound = read-host ("What # do you want to start at?")
-    $upperBound = read-host ("What # do you want to end at?")
-    $choices = $lowerBound..$upperBound
+
+    Write-Output "Select videos you want seperated by a comma. Press enter when finished."
+    #Externally set input value as string
+    [string[]] $_choices= @()
+    #Get the input from the user
+    $_choices = READ-HOST "Enter List of videos"
+    #splitting the list of input as array by Comma & Empty Space
+    $_choices = $_choices.Split(',').Split(' ')
+
     $path = read-host ("What path do you want to download this to? ex: D:/Media/TV/Breaking Bad/Season 01/")
     foreach ($selectedNumber in $choices){
         $choice = $entryData[$selectedNumber-1]
