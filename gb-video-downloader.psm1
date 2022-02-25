@@ -67,6 +67,7 @@ function Invoke-GiantBombVideoSearch {
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Alias('SearchQuery')][string]$search
     )
+
     
     $var = Invoke-GiantBombAPI -SearchType "search" -Filters "&query=$search"
     ## grab total number of pages to make sure we loop through all results ##
@@ -97,11 +98,14 @@ function Invoke-GiantBombVideoSearch {
 
     Write-Output "Select videos you want seperated by a comma. Press enter when finished."
     #Externally set input value as string
-    [string[]] $_choices= @()
+    [string[]] $choices= @()
     #Get the input from the user
-    $_choices = READ-HOST "Enter List of videos"
+    $choices = READ-HOST "Enter List of videos"
     #splitting the list of input as array by Comma & Empty Space
-    $_choices = $_choices.Split(',').Split(' ')
+    $choices = $choices.Split(',').Split(' ')
+
+    [xml]$configFile = get-content .\config.xml 
+    $key = "?api_key=" + $configFile.configuration.add.value
 
     $path = read-host ("What path do you want to download this to? ex: D:/Media/TV/Breaking Bad/Season 01/")
     foreach ($selectedNumber in $choices){
