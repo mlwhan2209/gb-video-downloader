@@ -61,23 +61,49 @@ function Invoke-GiantBombAPI {
     Invoke-RestMethod -Uri $TempUri -Method Get
 }
 
+<#
+.SYNOPSIS
+This will invoke the GB API search route  in an easy little function you can use 
+
+.DESCRIPTION
+The function hides all the bs you don't need to allow the user to just put their
+exact search they want into the function call
+
+.PARAMETER Search 
+This a mandatory parameter
+This should commonly be wrote as -Search "<string>"
+This is used to return requests as JSON and 
+Allow users to easily search for the video type they want  
+
+.EXAMPLE
+Invoke-GiantBombVideoSearch -Search "flight club"
+Invoke-GiantBombVideoSearch -Search "digital combat simiulator"
+
+.NOTES
+This function is tricky. Giant Bomb's search API only allows 10 results to return per page
+at the same time, you might get 500 hits on your search. So you can't rotate
+through all of these results without blowing up their API with 900 requests in an hour
+just from going through all the pages
+#>
 function Invoke-GiantBombVideoSearch {
     [cmdletbinding()]
     param(
         [Parameter(Mandatory, ValueFromPipeline, ValueFromPipelineByPropertyName)]
         [Alias('SearchQuery')][string]$search
     )
-
     
-    $var = Invoke-GiantBombAPI -SearchType "search" -Filters "&query=$search"
+    $var = Invoke-GiantBombAPI -SearchType "search" -Filters "&query=$search&resources=video"
+
     ## grab total number of pages to make sure we loop through all results ##
     [int]$pageNumbers = $var.number_of_total_results / 100
     $i = 0
     while ($i -le $pageNumbers) {
         $i++
-        $newpage = Invoke-GiantBombAPI -Filters "&query=$search&offset=$($i)00" -SearchType "search"
+        $newpage = Invoke-GiantBombAPI -SearchType "search" -Filters "&query=$search&offset=$($i)00&resources=video" 
         $var.results += $newpage.results
     }
+    
+    $var.results = $var.results | Sort-Object {$_.name}  -Unique
 
     ## loop through each entry found ##
     $entryData = @()
@@ -88,12 +114,7 @@ function Invoke-GiantBombVideoSearch {
             'guid' = "$($entry.guid)"
             'name' = "$($entry.name)"
         }
-        if ($($entry.premium) -eq "True"){
-            Write-Output "`n$i. $($entry.name) (premium) `n$($entry.deck)`n"
-        }
-        else {
-            Write-Output "`n$i. $($entry.name) `n$($entry.deck)`n" 
-        }
+        Write-Output "`n$i. $($entry.name) `n$($entry.deck)`n"
     }
 
     Write-Output "Select videos you want seperated by a comma. Press enter when finished."
