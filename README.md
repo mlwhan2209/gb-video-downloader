@@ -12,7 +12,7 @@ There are 2 ways to use this module, you can run the .ps1 and have it list shows
 ## Usage
 If you want to do the basic script, have it list all the Giant Bomb shows and you pick the show then the episodes you want from the list you want to just run `gb-video-downloader.ps1` 
 
-If you want to do a search for a specific video name, you have to run
+If you want to do a search for a specific video, you have to run
 
     Import-Module ./gb-video-downloader.psm1 -Force
     Invoke-GiantBombVideoSearch -Search "<your-search-here>"
