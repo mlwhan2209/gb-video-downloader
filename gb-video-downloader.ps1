@@ -79,6 +79,7 @@ foreach ($selectedNumber in $choices){
     }
     elseif ($var.results.low_url) {
         Write-Output "Downloading Low version of $($var.results.name)"
+        Invoke-WebRequest -URI "$($var.results.low_url)$key" -Outfile $fileName
     }
     else {
         Write-Output "All URL's empty :(. Is something broke?"
